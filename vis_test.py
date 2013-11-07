@@ -1,3 +1,5 @@
+#Based on http://pythonvision.org/basic-tutorial
+
 import numpy as np
 import scipy
 import pylab
