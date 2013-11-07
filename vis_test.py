@@ -6,14 +6,19 @@ import pylab
 import pymorph
 import mahotas
 from scipy import ndimage
+import argparse
 
-chart = mahotas.imread('sample_chart.png');
-dna = mahotas.imread('dna.jpeg');
+parser = argparse.ArgumentParser(description='Import data from an image')
+parser.add_argument('-i', dest = 'input_file', help='the image to import', default='data/sample_chart.png')
+args = vars(parser.parse_args())
+input_file = args["input_file"]
 
-print chart.shape
-print chart.dtype
-print chart.max()
-print chart.min()
+image=mahotas.imread(input_file)
 
-pylab.imshow(chart)
+print 'shape:', image.shape
+print 'data type:', image.dtype
+print 'max:', image.max()
+print 'min:', image.min()
+
+pylab.imshow(image)
 pylab.show()
