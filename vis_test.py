@@ -40,44 +40,69 @@ def output_image(image, output_file_name):
             output_file.write(')')
         output_file.write('\n')
 
-def output_color_image(color_image, output_file_name):
+def output_array(color_image, output_file_name):
     output_file=open(output_file_name,'w+')
     for col in color_image:
         for pixel in col:
             output_file.write('{0}, '.format(pixel))
         output_file.write('\n')
 
-def is_grayscale(color,threshold):
-    if abs(color.red-color.blue)>threshold:
+def is_grayscale_color(color,threshold):
+    return is_grayscale_raw(color.rgb, threshold)
+
+def is_grayscale_raw(rgb,threshold):
+    print rgb, rgb[0], rgb[1], rgb[2]
+    if abs(rgb[0]-rgb[1])>threshold:
         return False
-    if abs(color.red-color.green)>threshold:
+    if abs(rgb[0]-rgb[2])>threshold:
         return False
-    if abs(color.blue-color.green)>threshold:
+    if abs(rgb[1]-rgb[2])>threshold:
         return False
     return True
 
-#Return an array with 1 where the color is not grayscale and 0 where the color is grayscale
+#Take an array of Color objects corresponding to an image
+#Return an array with a Color object where the color is not grayscale and 0 where the color is grayscale
 #Where grayscale is defined as having all three rgb values within (threshold) of each other
-def nongrayscale(color_image, threshold=0.01):
+def nongrayscale_color(color_image, threshold=0.01):
     col_count = len(color_image)
     row_count = len(color_image[0])
     nongrayscale_image = np.zeros([col_count,row_count], dtype=Color)
     for i in xrange(col_count):
         for j in xrange(row_count):
-            if not is_grayscale(color_image[i][j], threshold):
+            if not is_grayscale_color(color_image[i][j], threshold):
                 nongrayscale_image[i][j]=color_image[i][j]
     return nongrayscale_image
 
+#Take a numpy array imported from an image
+#Return an array with 1 where the color is not grayscale and 0 where the color is grayscale
+def nongrayscale_raw(image, threshold=3):
+    col_count = len(image)
+    row_count = len(image[0])
+    nongrayscale_array=np.zeros([col_count,row_count])
+    for i in xrange(col_count):
+        for j in xrange(row_count):
+            if not is_grayscale_raw(image[i][j][:3], threshold):
+                nongrayscale_array[i][j]=1
+    return nongrayscale_array
+
 image=mahotas.imread(input_file)
+nongrayscale_array=nongrayscale_raw(image)
+output_array(nongrayscale_array,'nongrayscale.txt')
+
 #output_image(image, 'temp.txt')
-color_image = make_color_array(image)
-print color_image[0][0]
+#color_image = make_color_array(image)
+
+#print color_image[0][0]
+#print is_grayscale_color(color_image[0][0], 0.01)
+
+"""
 temp = nongrayscale(color_image)
 print color_image[0][0]
 print 'temp', temp[0][0]
-output_color_image(temp, 'nongrayscale.txt')
+output_array(temp, 'nongrayscale.txt')
+"""
 #output_image(image, 'temp.txt')
-#output_color_image(make_color_array(image),'temp_color.txt')
+#output_array(make_color_array(image),'temp_color.txt')
 """
 print image[0]
 print image[0][0]
