@@ -8,6 +8,7 @@ import mahotas
 from scipy import ndimage
 from colour import Color
 import argparse
+import math
 
 parser = argparse.ArgumentParser(description='Import data from an image')
 parser.add_argument('-i', dest = 'input_file', help='the image to import', default='data/sample_chart_small.png')
@@ -46,17 +47,20 @@ def output_array(color_image, output_file_name):
         for pixel in col:
             output_file.write('{0}, '.format(pixel))
         output_file.write('\n')
+    print 'array written to',output_file_name
 
 def is_grayscale_color(color,threshold):
     return is_grayscale_raw(color.rgb, threshold)
 
 def is_grayscale_raw(rgb,threshold):
-    print rgb, rgb[0], rgb[1], rgb[2]
-    if abs(rgb[0]-rgb[1])>threshold:
+    #By default, the rgb array can only hold values from 0-255.
+    #That makes it difficult to compare values, so we convert it to int.
+    rgb_int = np.int_(rgb)
+    if abs(rgb_int[0]-rgb_int[1])>threshold:
         return False
-    if abs(rgb[0]-rgb[2])>threshold:
+    if abs(rgb_int[0]-rgb_int[2])>threshold:
         return False
-    if abs(rgb[1]-rgb[2])>threshold:
+    if abs(rgb_int[1]-rgb_int[2])>threshold:
         return False
     return True
 
@@ -87,7 +91,9 @@ def nongrayscale_raw(image, threshold=3):
 
 image=mahotas.imread(input_file)
 nongrayscale_array=nongrayscale_raw(image)
-output_array(nongrayscale_array,'nongrayscale.txt')
+
+
+#output_array(nongrayscale_array,'nongrayscale.txt')
 
 #output_image(image, 'temp.txt')
 #color_image = make_color_array(image)
