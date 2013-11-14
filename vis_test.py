@@ -11,7 +11,7 @@ import argparse
 import math
 
 parser = argparse.ArgumentParser(description='Import data from an image')
-parser.add_argument('-i', dest = 'input_file', help='the image to import', default='data/sample_chart_small.png')
+parser.add_argument('-i', dest = 'input_file', help='the image to import', default='data/sample_chart_easy.png')
 args = vars(parser.parse_args())
 input_file = args["input_file"]
 
@@ -91,7 +91,10 @@ def nongrayscale_raw(image, threshold=3):
 
 image=mahotas.imread(input_file)
 nongrayscale_array=nongrayscale_raw(image)
-
+labeled,object_count = ndimage.label(nongrayscale_array)
+print 'object_count:', object_count
+pylab.imshow(labeled)
+pylab.show()
 
 #output_array(nongrayscale_array,'nongrayscale.txt')
 
@@ -112,7 +115,7 @@ output_array(temp, 'nongrayscale.txt')
 """
 print image[0]
 print image[0][0]
-print color_scale(image[0][0])
+rint color_scale(image[0][0])
 print Color(rgb=color_ratio(image[0][0]))
 """
 """
