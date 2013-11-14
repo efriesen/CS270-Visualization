@@ -57,10 +57,13 @@ def is_grayscale_raw(rgb,threshold):
     #That makes it difficult to compare values, so we convert it to int.
     rgb_int = np.int_(rgb)
     if abs(rgb_int[0]-rgb_int[1])>threshold:
+        #print rgb,
         return False
     if abs(rgb_int[0]-rgb_int[2])>threshold:
+        #print rgb,
         return False
     if abs(rgb_int[1]-rgb_int[2])>threshold:
+        #print rgb,
         return False
     return True
 
@@ -82,21 +85,23 @@ def nongrayscale_color(color_image, threshold=0.01):
 def nongrayscale_raw(image, threshold=3):
     col_count = len(image)
     row_count = len(image[0])
-    nongrayscale_array=np.zeros([col_count,row_count])
+    nongrayscale_image=np.zeros([col_count,row_count])
     for i in xrange(col_count):
         for j in xrange(row_count):
             if not is_grayscale_raw(image[i][j][:3], threshold):
-                nongrayscale_array[i][j]=1
-    return nongrayscale_array
+                nongrayscale_image[i][j]=1
+    return nongrayscale_image
 
 image=mahotas.imread(input_file)
-nongrayscale_array=nongrayscale_raw(image)
-labeled,object_count = ndimage.label(nongrayscale_array)
+nongrayscale_image=nongrayscale_raw(image)
+#regmax = pymorph.regmax(nongrayscale_image)
+labeled,object_count = ndimage.label(nongrayscale_image)
 print 'object_count:', object_count
 pylab.imshow(labeled)
+pylab.gray()
 pylab.show()
 
-#output_array(nongrayscale_array,'nongrayscale.txt')
+#output_array(nongrayscale_image,'nongrayscale.txt')
 
 #output_image(image, 'temp.txt')
 #color_image = make_color_array(image)
