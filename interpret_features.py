@@ -2,18 +2,33 @@ import numpy as np
 import scipy
 from scipy import ndimage
 
-debug=False
+class analyzer:
+    data_centers=list()
 
-def interpret_feature(image, image_labels, feature_index, feature_type):
-    if feature_type=='data_point':
-        return interpret_data_point(image, image_labels, feature_index)
-    elif feature_type == 'axis':
-        return interpret_axis(feature, feature_index)
+    def __init__(self, image, image_labels, feature_types):
+        data_point_indexes = list()
+        axis_label_indexes = list()
+        axis_line_indexes = list()
+        for i in xrange(0, len(feature_types)):
+            if feature_types[i]=='data_point':
+                data_point_indexes.append(i+1)
+            elif feature_types[i]=='axis_label':
+                axis_label_indexes.append(i)
+            elif feature_types[i]=='axis_line':
+                axis_line_indexes.append(i)
+        self.data_centers = calculate_data_centers(image, image_labels, data_point_indexes)
 
-def interpret_data_point(image, image_labels, feature_index):
-    if debug: print 'interpret_data_point'
-    center = ndimage.center_of_mass(image, image_labels, feature_index)
-    return center
+    def get_data_centers(self):
+        return self.data_centers
 
-def interpret_axis(feature):
+def calculate_data_centers(image, image_labels, data_point_indexes):
+    return ndimage.center_of_mass(image, image_labels, data_point_indexes)
+
+def interpret_axis(image, image_labels, feature_index):
+    pass
+
+def interpret_axis_label(image, image_labels, feature_index):
+    pass
+
+def interpret_axis_line(image, image_labels, feature_index):
     pass
