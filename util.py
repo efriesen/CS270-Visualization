@@ -1,7 +1,6 @@
 import numpy as np
 import pylab
 import pymorph
-import mahotas
 from colour import Color
 
 #Convert a 0-255 color list into a 0-1 color list
