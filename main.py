@@ -18,5 +18,5 @@ if __name__ == "__main__":
     image=mahotas.imread(input_file)
     image_labels, feature_count = identify.identify_features(image)
     feature_types = identify.identify_feature_types(image, image_labels, feature_count)
-    print interpret.interpret_feature(
-            identify.nongrayscale_raw(image), image_labels, 1, 'data_point')
+    image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labels, feature_types)
+    print image_analyzer.get_data_centers()
