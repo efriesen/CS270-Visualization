@@ -20,12 +20,12 @@ if __name__ == "__main__":
     image=mahotas.imread(input_file)
     print image
     image_labels, feature_count = identify.identify_features(image)
-    #print feature_count
+    print 'feature_count:', feature_count
     feature_types = identify.identify_feature_types(image, image_labels, feature_count)
     image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labels, feature_types)
     test_image = Image.open('data/sample_chart.png')
     box = (200,5,300,50)
-    print util.ocr_cropped(test_image, box)
+    #print util.ocr_cropped(test_image, box)
 
     #util.display_graph(image_analyzer.get_data_centers())
     #print image_analyzer.get_objects()
