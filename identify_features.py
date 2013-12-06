@@ -38,7 +38,6 @@ def identify_features(image):
 
     nongrayscale_image=nongrayscale_raw(image)
     image_labels, feature_count = ndimage.label(nongrayscale_image)
-    print feature_count
     return image_labels, feature_count
 
 def identify_feature_types(image, image_labels, feature_count):
