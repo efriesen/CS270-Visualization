@@ -5,6 +5,14 @@ from colour import Color
 #imports look weird because my system is weird
 from pytesser import pytesser
 from PIL import Image
+import mahotas
+
+def imread(input_file_name):
+    image = mahotas.imread(input_file_name)
+    #Check if it is on a 0-255 scale
+    if image[0][0][0]<1:
+        image=image*255
+    return image
 
 #Convert a 0-255 color list into a 0-1 color list
 #Round to three decimal places to prevent strange color errors
@@ -71,6 +79,9 @@ def ocr(image):
 def ocr_cropped(image, box):
     region = image.crop(box)
     return pytesser.image_to_string(region)
+
+def numpy_to_pil(image):
+    return 
 
 #There are only comments from here on
 #The graveyard of previous code
