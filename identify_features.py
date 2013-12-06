@@ -6,7 +6,9 @@ GRAYSCALE=3
 def is_grayscale_raw(rgb, threshold):
     #By default, the rgb array can only hold values from 0-255.
     #That makes it difficult to compare values, so we convert it to int.
+    #print rgb
     rgb_int = np.int_(rgb)
+    #print rgb_int
     if abs(rgb_int[0]-rgb_int[1])>threshold:
         #print rgb,
         return False
