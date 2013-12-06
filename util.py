@@ -81,7 +81,10 @@ def ocr_cropped(image, box):
     return pytesser.image_to_string(region)
 
 def numpy_to_pil(image):
-    return 
+    return Image.fromarray(image)
+
+def pil_to_numpy(image):
+    return numpy.array(image)
 
 #There are only comments from here on
 #The graveyard of previous code

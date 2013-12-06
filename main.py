@@ -23,7 +23,8 @@ if __name__ == "__main__":
     print 'feature_count:', feature_count
     feature_types = identify.identify_feature_types(image, image_labels, feature_count)
     image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labels, feature_types)
-    test_image = Image.open('data/sample_chart.png')
+    #test_image = Image.open('data/sample_chart.png')
+    test_image = util.numpy_to_pil(image)
     box = (200,5,300,50)
     print util.ocr_cropped(test_image, box)
 
