@@ -2,6 +2,9 @@ import numpy as np
 import pylab
 import pymorph
 from colour import Color
+#imports look weird because my system is weird
+from pytesser import pytesser
+from PIL import Image
 
 #Convert a 0-255 color list into a 0-1 color list
 #Round to three decimal places to prevent strange color errors
@@ -59,6 +62,15 @@ def find_all_centers(image, image_labels, feature_count):
 def display_graph(image):
     pylab.imshow(image)
     pylab.show()
+
+
+def ocr(image):
+    return pytesser.image_to_string(image)
+
+#http://www.riisen.dk/dop/pil.html
+def ocr_cropped(image, box):
+    region = image.crop(box)
+    return pytesser.image_to_string(region)
 
 #There are only comments from here on
 #The graveyard of previous code
