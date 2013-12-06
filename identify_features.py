@@ -41,5 +41,5 @@ def identify_feature_types(image, image_labels, feature_count):
     feature_types = []
     for i in xrange(feature_count):
         #do magic here
-        feature_types.append('todo')
+        feature_types.append('data_point')
     return feature_types
