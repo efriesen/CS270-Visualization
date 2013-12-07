@@ -10,8 +10,8 @@ import mahotas
 def imread(input_file_name):
     image = mahotas.imread(input_file_name)
     #Check if it is on a 0-255 scale
-    if image[0][0][0]<1:
-        image=image*255
+    if image[0][0][0]<1 and image[0][0][0]>0:
+        image=int(image*255)
     return image
 
 #Convert a 0-255 color list into a 0-1 color list
@@ -80,8 +80,13 @@ def ocr_cropped(image, box):
     region = image.crop(box)
     return pytesser.image_to_string(region)
 
+#conversion functions based on http://stackoverflow.com/questions/384759/pil-and-numpy
 def numpy_to_pil(image):
-    return 
+    print image
+    return Image.fromarray(image)
+
+def pil_to_numpy(image):
+    return numpy.array(image)
 
 #There are only comments from here on
 #The graveyard of previous code
