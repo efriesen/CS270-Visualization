@@ -7,7 +7,6 @@ class analyzer:
     image=None
     image_labels=None
     feature_types=None
-    
 
     def __init__(self, image, image_labels, feature_types):
         self.image=image

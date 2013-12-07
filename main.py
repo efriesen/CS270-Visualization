@@ -1,7 +1,6 @@
 #Based on http://pythonvision.org/basic-tutorial
 
 import argparse
-import mahotas
 import interpret_features as interpret
 import identify_features as identify
 import util

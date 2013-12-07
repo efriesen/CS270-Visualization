@@ -72,7 +72,6 @@ def display_graph(image):
     pylab.imshow(image)
     pylab.show()
 
-
 def ocr(image):
     return pytesser.image_to_string(image)
 
