@@ -18,6 +18,7 @@ if __name__ == "__main__":
     args = initialize_argument_parser()
     input_file = args["input_file"]
     image=util.imread(input_file)
+    #util.display_graph(image)
     #print image
     image_labels, feature_count = identify.identify_features(image)
     print 'feature_count:', feature_count

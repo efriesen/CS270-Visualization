@@ -1,5 +1,7 @@
 import numpy as np
 from scipy import ndimage
+import util
+import pylab
 
 GRAYSCALE=3
 
@@ -30,6 +32,8 @@ def nongrayscale_raw(image, threshold=GRAYSCALE):
         for j in xrange(row_count):
             if not is_grayscale_raw(image[i][j][:3], threshold):
                 nongrayscale_image[i][j]=1
+    #pylab.gray()
+    #util.display_graph(nongrayscale_image)
     return nongrayscale_image
 
 def identify_features(image):
