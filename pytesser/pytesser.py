@@ -21,7 +21,7 @@ def call_tesseract(input_filename, output_filename):
 	outputting output_filename+'txt'"""
 	devnull = open(os.devnull, 'w') #modified
 	args = [tesseract_exe_name, input_filename, output_filename]
-    print args
+	print args
 	proc = subprocess.Popen(args) #modified
 	retcode = proc.wait()
 	if retcode!=0:
