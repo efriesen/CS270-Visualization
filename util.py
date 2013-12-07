@@ -11,7 +11,8 @@ def imread(input_file_name):
     image = mahotas.imread(input_file_name)
     #Check if it is on a 0-255 scale
     if image[0][0][0]<1 and image[0][0][0]>0:
-        image=int(image*255)
+        image=image*255
+        image = image.astype(int)
     return image
 
 #Convert a 0-255 color list into a 0-1 color list
