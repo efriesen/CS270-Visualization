@@ -1,0 +1,86 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Color	.\util.py	/^from colour import Color$/;"	i
+GRAYSCALE	.\identify_features.py	/^GRAYSCALE=3$/;"	v
+Image	.\main.py	/^from PIL import Image$/;"	i
+Image	.\pytesser\pytesser.py	/^from PIL import Image$/;"	i
+Image	.\util.py	/^from PIL import Image$/;"	i
+Tesser_General_Exception	.\pytesser\errors.py	/^class Tesser_General_Exception(Exception):$/;"	c
+Tesser_Invalid_Filetype	.\pytesser\errors.py	/^class Tesser_Invalid_Filetype(Tesser_General_Exception):$/;"	c
+__init__	.\interpret_features.py	/^    def __init__(self, image, image_labels, feature_types):$/;"	m	class:analyzer
+analyzer	.\interpret_features.py	/^class analyzer:$/;"	c
+argparse	.\main.py	/^import argparse$/;"	i
+args	.\main.py	/^    args = initialize_argument_parser()$/;"	v
+box	.\main.py	/^    box = (200,5,300,50)$/;"	v
+calculate_data_centers	.\interpret_features.py	/^def calculate_data_centers(image, image_labels, data_point_indexes):$/;"	f
+call_tesseract	.\pytesser\pytesser.py	/^def call_tesseract(input_filename, output_filename):$/;"	f
+check_for_errors	.\pytesser\errors.py	/^def check_for_errors(logfile = "tesseract.log"):$/;"	f
+cleanup_scratch_flag	.\pytesser\pytesser.py	/^cleanup_scratch_flag = True  # Temporary files cleaned up after OCR operation$/;"	v
+color_ratio	.\util.py	/^def color_ratio(rgb_big):$/;"	f
+data_centers	.\interpret_features.py	/^    data_centers=list()$/;"	v	class:analyzer
+display_graph	.\util.py	/^def display_graph(image):$/;"	f
+errors	.\pytesser\pytesser.py	/^import errors$/;"	i
+feature_types	.\interpret_features.py	/^    feature_types=None$/;"	v	class:analyzer
+feature_types	.\main.py	/^    feature_types = identify.identify_feature_types(image, image_labels, feature_count)$/;"	v
+find_all_centers	.\util.py	/^def find_all_centers(image, image_labels, feature_count):$/;"	f
+get_data_centers	.\interpret_features.py	/^    def get_data_centers(self):$/;"	m	class:analyzer
+get_objects	.\interpret_features.py	/^    def get_objects(self):$/;"	m	class:analyzer
+identify	.\main.py	/^import identify_features as identify$/;"	i
+identify_feature_types	.\identify_features.py	/^def identify_feature_types(image, image_labels, feature_count):$/;"	f
+identify_features	.\identify_features.py	/^def identify_features(image):$/;"	f
+im	.\pytesser\pytesser.py	/^	im = Image.open('phototest.tif')$/;"	v
+image	.\interpret_features.py	/^    image=None$/;"	v	class:analyzer
+image	.\main.py	/^    image=util.imread(input_file)$/;"	v
+image_analyzer	.\main.py	/^    image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labels, feature_types)$/;"	v
+image_file_to_string	.\pytesser\pytesser.py	/^def image_file_to_string(filename, cleanup = cleanup_scratch_flag, graceful_errors=True):$/;"	f
+image_labels	.\interpret_features.py	/^    image_labels=None$/;"	v	class:analyzer
+image_to_scratch	.\pytesser\util.py	/^def image_to_scratch(im, scratch_image_name):$/;"	f
+image_to_string	.\pytesser\pytesser.py	/^def image_to_string(im, cleanup = cleanup_scratch_flag):$/;"	f
+imread	.\util.py	/^def imread(input_file_name):$/;"	f
+initialize_argument_parser	.\main.py	/^def initialize_argument_parser():$/;"	f
+input_file	.\main.py	/^    input_file = args["input_file"]$/;"	v
+interpret	.\main.py	/^import interpret_features as interpret$/;"	i
+interpret_axis	.\interpret_features.py	/^def interpret_axis(image, image_labels, feature_index):$/;"	f
+interpret_axis_label	.\interpret_features.py	/^def interpret_axis_label(image, image_labels, feature_index):$/;"	f
+interpret_axis_line	.\interpret_features.py	/^def interpret_axis_line(image, image_labels, feature_index):$/;"	f
+is_grayscale_color	.\util.py	/^def is_grayscale_color(color,threshold):$/;"	f
+is_grayscale_raw	.\identify_features.py	/^def is_grayscale_raw(rgb, threshold):$/;"	f
+mahotas	.\util.py	/^import mahotas$/;"	i
+make_color_array	.\util.py	/^def make_color_array(input_array):$/;"	f
+ndimage	.\identify_features.py	/^from scipy import ndimage$/;"	i
+ndimage	.\interpret_features.py	/^from scipy import ndimage$/;"	i
+nongrayscale_color	.\util.py	/^def nongrayscale_color(color_image, threshold=0.01):$/;"	f
+nongrayscale_raw	.\identify_features.py	/^def nongrayscale_raw(image, threshold=GRAYSCALE):$/;"	f
+np	.\identify_features.py	/^import numpy as np$/;"	i
+np	.\interpret_features.py	/^import numpy as np$/;"	i
+np	.\util.py	/^import numpy as np$/;"	i
+numpy_to_pil	.\util.py	/^def numpy_to_pil(image):$/;"	f
+ocr	.\util.py	/^def ocr(image):$/;"	f
+ocr_cropped	.\util.py	/^def ocr_cropped(image, box):$/;"	f
+os	.\pytesser\pytesser.py	/^import os$/;"	i
+os	.\pytesser\util.py	/^import os$/;"	i
+output_array	.\util.py	/^def output_array(color_image, output_file_name):$/;"	f
+output_image	.\util.py	/^def output_image(image, output_file_name):$/;"	f
+perform_cleanup	.\pytesser\util.py	/^def perform_cleanup(scratch_image_name, scratch_text_name_root):$/;"	f
+pil_to_numpy	.\util.py	/^def pil_to_numpy(image):$/;"	f
+pylab	.\identify_features.py	/^import pylab$/;"	i
+pylab	.\util.py	/^import pylab$/;"	i
+pymorph	.\util.py	/^import pymorph$/;"	i
+pytesser	.\util.py	/^from pytesser import pytesser$/;"	i
+scipy	.\interpret_features.py	/^import scipy$/;"	i
+scratch_image_name	.\pytesser\pytesser.py	/^scratch_image_name = "temp.bmp" # This file must be .bmp or other Tesseract-compatible format$/;"	v
+scratch_text_name_root	.\pytesser\pytesser.py	/^scratch_text_name_root = "temp" # Leave out the .txt extension$/;"	v
+subprocess	.\pytesser\pytesser.py	/^import subprocess$/;"	i
+tesseract_exe_name	.\pytesser\pytesser.py	/^tesseract_exe_name = 'tesseract' # Name of executable to be called at command line$/;"	v
+test_image	.\main.py	/^    test_image = util.numpy_to_pil(image)$/;"	v
+text	.\pytesser\pytesser.py	/^		text = image_file_to_string('fnord.tif', graceful_errors=False)$/;"	v
+text	.\pytesser\pytesser.py	/^	text = image_file_to_string('fnord.tif', graceful_errors=True)$/;"	v
+text	.\pytesser\pytesser.py	/^	text = image_file_to_string('fonts_test.png', graceful_errors=True)$/;"	v
+text	.\pytesser\pytesser.py	/^	text = image_to_string(im)$/;"	v
+util	.\identify_features.py	/^import util$/;"	i
+util	.\main.py	/^import util$/;"	i
+util	.\pytesser\pytesser.py	/^import util$/;"	i
