@@ -53,9 +53,12 @@ def identify_features(image):
     #"nongrayscale" is a placeholder with weaknesses we have identified
     #So a new algorithm goes here
 
-    #filtered_image=nongrayscale_raw(image)
-    filtered_image = non_white(image)
+    filtered_image=nongrayscale_raw(image)
+    #filtered_image = non_white(image)
+    #util.display_graph(filtered_image)
+    #http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html
     image_labels, feature_count = ndimage.label(filtered_image)
+    #util.display_graph(image_labels)
     return image_labels, feature_count
 
 def identify_feature_types(image, image_labels, feature_count):
