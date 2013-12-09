@@ -21,13 +21,22 @@ if __name__ == "__main__":
     #print image
     image_labels, feature_count = identify.identify_features(image)
     print 'feature_count:', feature_count
+    #determine feature types of identified features
     feature_types = identify.identify_feature_types(image, image_labels, feature_count)
+    #object to perform analysis of features
     image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labels, feature_types)
-    #test_image = Image.open('data/sample_chart.png')
-    test_image = util.numpy_to_pil(image)
-    box = (200,5,300,50)
-    #print util.ocr_cropped(test_image, box)
-    print util.ocr(test_image)
+    #a set of slices that comprise the objects in the image
+    object_slices = image_analyzer.get_objects()
+    #Convert the input image into a PIL-friendly format
+    pil_image = util.numpy_to_pil(image)
+    #Get a bounding box for the first slice
+    box = interpret.slice_to_box(object_slices[0])
+
+    #cropped_region = pil_image.crop(box)
+    #cropped_region.save('temp.png')
+
+    #print util.ocr_cropped(pil_image, box)
+    print util.ocr(pil_image)
 
     #util.display_graph(image_analyzer.get_data_centers())
     #print image_analyzer.get_objects()
