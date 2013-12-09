@@ -5,6 +5,15 @@ import pylab
 
 GRAYSCALE=3
 
+def is_white(rgb):
+    if rgb[0]<250:
+        return False
+    if rgb[1]<250:
+        return False
+    if rgb[2]<250:
+        return False
+    return True
+
 def is_grayscale_raw(rgb, threshold):
     #By default, the rgb array can only hold values from 0-255.
     #That makes it difficult to compare values, so we convert it to int.
