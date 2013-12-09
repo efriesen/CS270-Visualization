@@ -38,8 +38,8 @@ def slice_to_box(input_slice):
     print 'input_slice', input_slice
     corners = get_corners(input_slice)
     left = int(corners[0][0])
-    top = int(corners[0][1])
-    right = int(corners[1][0])
+    right = int(corners[0][1])
+    top = int(corners[1][0])
     bottom = int(corners[1][1])
     box = (left, top, right, bottom)
     print 'box', box
