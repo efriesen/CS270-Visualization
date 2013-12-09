@@ -26,7 +26,22 @@ def is_grayscale_raw(rgb, threshold):
         return False
     return True
 
+def filter_image(image, filter_function, threshold=GRAYSCALE):
+    #Take a numpy array imported from an image and a filtering function
+    #Return an array with 1 where the pixel matches the filtering function
+    # and 0 where it does not
+    col_count = len(image)
+    row_count = len(image[0])
+    filtered_image=np.zeros([col_count,row_count])
+    for i in xrange(col_count):
+        for j in xrange(row_count):
+            if filter_function(image[i][j][:3], threshold):
+                filtered_image[i][j]=1
+    return filtered_image
+
 def nongrayscale_raw(image, threshold=GRAYSCALE):
+    return filter_image(image, lambda x,y: not is_grayscale_raw(x,y), threshold)
+"""
     #Take a numpy array imported from an image
     #Return an array with 1 where the color is not grayscale and 0 where the color is grayscale
     col_count = len(image)
@@ -39,6 +54,7 @@ def nongrayscale_raw(image, threshold=GRAYSCALE):
     #pylab.gray()
     #util.display_graph(nongrayscale_image)
     return nongrayscale_image
+"""
 
 def identify_features(image):
     #Project part #1: identify features
