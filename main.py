@@ -41,6 +41,7 @@ if __name__ == "__main__":
     box = interpret.slice_to_box(object_slices[0])
     print 'box', box
     print 'and box', image_analyzer.bounding_boxes[0]
+    image_analyzer.save_bbox_index('temp.png',1)
 
     #cropped_region = pil_image.crop(box)
     #cropped_region.save('temp.png')
