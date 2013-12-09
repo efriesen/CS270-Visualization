@@ -26,7 +26,7 @@ def is_grayscale_raw(rgb, threshold):
         return False
     return True
 
-def filter_image(image, filter_function, threshold=GRAYSCALE):
+def filter_image(image, filter_function):
     #Take a numpy array imported from an image and a filtering function
     #Return an array with 1 where the pixel matches the filtering function
     # and 0 where it does not
@@ -35,37 +35,27 @@ def filter_image(image, filter_function, threshold=GRAYSCALE):
     filtered_image=np.zeros([col_count,row_count])
     for i in xrange(col_count):
         for j in xrange(row_count):
-            if filter_function(image[i][j][:3], threshold):
+            if filter_function(image[i][j][:3]):
                 filtered_image[i][j]=1
     return filtered_image
 
 def nongrayscale_raw(image, threshold=GRAYSCALE):
     #1 if the pixel is not grayscale, 0 if it is grayscale
-    filter_function = lambda x,y: not is_grayscale_raw(x,y)
-    return filter_image(image, filter_function, threshold)
-"""
-    #Take a numpy array imported from an image
-    #Return an array with 1 where the color is not grayscale and 0 where the color is grayscale
-    col_count = len(image)
-    row_count = len(image[0])
-    nongrayscale_image=np.zeros([col_count,row_count])
-    for i in xrange(col_count):
-        for j in xrange(row_count):
-            if not is_grayscale_raw(image[i][j][:3], threshold):
-                nongrayscale_image[i][j]=1
-    #pylab.gray()
-    #util.display_graph(nongrayscale_image)
-    return nongrayscale_image
-"""
+    filter_function = lambda x: not is_grayscale_raw(x,threshold)
+    return filter_image(image, filter_function)
+
+def non_white(image):
+    filter_function = lambda x: not is_white(x)
+    return filter_image(image, filter_function)
 
 def identify_features(image):
     #Project part #1: identify features
     #"nongrayscale" is a placeholder with weaknesses we have identified
     #So a new algorithm goes here
 
-
-    nongrayscale_image=nongrayscale_raw(image)
-    image_labels, feature_count = ndimage.label(nongrayscale_image)
+    #filtered_image=nongrayscale_raw(image)
+    filtered_image = non_white(image)
+    image_labels, feature_count = ndimage.label(filtered_image)
     return image_labels, feature_count
 
 def identify_feature_types(image, image_labels, feature_count):
