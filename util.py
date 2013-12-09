@@ -65,8 +65,8 @@ def nongrayscale_color(color_image, threshold=0.01):
                 nongrayscale_image[i][j]=color_image[i][j]
     return nongrayscale_image
 
-def find_all_centers(image, image_labels, feature_count):
-    return ndimage.center_of_mass(image, image_labels, range(1,feature_count+1))
+def find_all_centers(image, image_labeled, feature_count):
+    return ndimage.center_of_mass(image, image_labeled, range(1,feature_count+1))
 
 def display_graph(image):
     pylab.imshow(image)
@@ -82,11 +82,14 @@ def ocr_cropped(image, box):
 
 #conversion functions based on http://stackoverflow.com/questions/384759/pil-and-numpy
 def numpy_to_pil(image):
-    print image
     return Image.fromarray(image)
 
 def pil_to_numpy(image):
     return numpy.array(image)
+
+#Writes array to file as an integer. Useful for image_labeled
+def write_array(file_name,numpy_array):
+    np.savetxt(file_name,numpy_array, fmt='%i')
 
 #There are only comments from here on
 #The graveyard of previous code

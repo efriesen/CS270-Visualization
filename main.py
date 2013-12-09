@@ -19,7 +19,7 @@ if __name__ == "__main__":
     image=util.imread(input_file)
     #util.display_graph(image)
     #print image
-    image_labels, feature_count = identify.identify_features(image)
+    image_labeled, feature_count = identify.identify_features(image)
     print 'feature_count:', feature_count
     feature_types = identify.identify_feature_types(image, image_labels, feature_count)
     image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labels, feature_types)
@@ -28,6 +28,25 @@ if __name__ == "__main__":
     box = (200,5,300,50)
     #print util.ocr_cropped(test_image, box)
     #print util.ocr(test_image)
+    #determine feature types of identified features
+    feature_types = identify.identify_feature_types(image, image_labeled, feature_count)
+    #object to perform analysis of features
+    image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labeled, feature_types)
+    #util.write_array('image_labeled.txt',image_labeled)
+    #a set of slices that comprise the objects in the image
+    object_slices = image_analyzer.object_slices
+    #Convert the input image into a PIL-friendly format
+    pil_image = util.numpy_to_pil(image)
+    #Get a bounding box for the first slice
+    box = interpret.slice_to_box(object_slices[0])
+    print 'box', box
+    print 'and box', image_analyzer.bounding_boxes[0]
+
+    #cropped_region = pil_image.crop(box)
+    #cropped_region.save('temp.png')
+
+    #print util.ocr_cropped(pil_image, box)
+    #print util.ocr(pil_image)
 
     #util.display_graph(image_analyzer.get_data_centers())
     #print image_analyzer.get_objects()
