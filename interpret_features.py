@@ -30,6 +30,21 @@ class analyzer:
     def get_objects(self):
         return ndimage.find_objects(self.image_labels)
 
+#http://stackoverflow.com/questions/17750974/how-to-get-coordinates-from-a-numpy-slice-object
+def get_corners(input_slice):
+    return [(sl.start, sl.stop) for sl in input_slice]
+
+def slice_to_box(input_slice):
+    print 'input_slice', input_slice
+    corners = get_corners(input_slice)
+    left = int(corners[0][0])
+    top = int(corners[0][1])
+    right = int(corners[1][0])
+    bottom = int(corners[1][1])
+    box = (left, top, right, bottom)
+    print 'box', box
+    return box
+
 def calculate_data_centers(image, image_labels, data_point_indexes):
     return ndimage.center_of_mass(image, image_labels, data_point_indexes)
 
