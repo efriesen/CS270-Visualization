@@ -5,12 +5,12 @@ from scipy import ndimage
 class analyzer:
     data_centers=list()
     image=None
-    image_labels=None
+    image_labeled=None
     feature_types=None
 
-    def __init__(self, image, image_labels, feature_types):
+    def __init__(self, image, image_labeled, feature_types):
         self.image=image
-        self.image_labels = image_labels
+        self.image_labeled = image_labeled
         self.feature_types = feature_types
         data_point_indexes = list()
         axis_label_indexes = list()
@@ -22,13 +22,13 @@ class analyzer:
                 axis_label_indexes.append(i)
             elif feature_types[i]=='axis_line':
                 axis_line_indexes.append(i)
-        self.data_centers = calculate_data_centers(image, image_labels, data_point_indexes)
+        self.data_centers = calculate_data_centers(image, image_labeled, data_point_indexes)
 
     def get_data_centers(self):
         return self.data_centers
 
     def get_objects(self):
-        return ndimage.find_objects(self.image_labels)
+        return ndimage.find_objects(self.image_labeled)
 
 #http://stackoverflow.com/questions/17750974/how-to-get-coordinates-from-a-numpy-slice-object
 def get_corners(input_slice):
@@ -45,14 +45,14 @@ def slice_to_box(input_slice):
     print 'box', box
     return box
 
-def calculate_data_centers(image, image_labels, data_point_indexes):
-    return ndimage.center_of_mass(image, image_labels, data_point_indexes)
+def calculate_data_centers(image, image_labeled, data_point_indexes):
+    return ndimage.center_of_mass(image, image_labeled, data_point_indexes)
 
-def interpret_axis(image, image_labels, feature_index):
+def interpret_axis(image, image_labeled, feature_index):
     pass
 
-def interpret_axis_label(image, image_labels, feature_index):
+def interpret_axis_label(image, image_labeled, feature_index):
     pass
 
-def interpret_axis_line(image, image_labels, feature_index):
+def interpret_axis_line(image, image_labeled, feature_index):
     pass
