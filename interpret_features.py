@@ -44,9 +44,8 @@ class analyzer:
         return bounding_boxes
 
     #Save a cropped section of the bounding box associated with a given index to file
-    def save_bbox_index(self, file_name, index):
+    def save_bbox_index(self, index, file_name='temp.png'):
         region = self.pil_image.crop(self.bounding_boxes[index])
-        print 'region', region
         region.save(file_name)
         
 
