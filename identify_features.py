@@ -58,7 +58,7 @@ def identify_features(image):
     #util.display_graph(filtered_image)
     #http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html
     image_labeled, feature_count = ndimage.label(filtered_image)
-    util.display_graph(image_labeled)
+    #util.display_graph(image_labeled)
     return image_labeled, feature_count
 
 def identify_feature_types(image, image_labeled, feature_count):
