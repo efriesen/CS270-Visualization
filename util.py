@@ -65,8 +65,8 @@ def nongrayscale_color(color_image, threshold=0.01):
                 nongrayscale_image[i][j]=color_image[i][j]
     return nongrayscale_image
 
-def find_all_centers(image, image_labels, feature_count):
-    return ndimage.center_of_mass(image, image_labels, range(1,feature_count+1))
+def find_all_centers(image, image_labeled, feature_count):
+    return ndimage.center_of_mass(image, image_labeled, range(1,feature_count+1))
 
 def display_graph(image):
     pylab.imshow(image)

@@ -57,11 +57,11 @@ def identify_features(image):
     #filtered_image = non_white(image)
     #util.display_graph(filtered_image)
     #http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html
-    image_labels, feature_count = ndimage.label(filtered_image)
-    #util.display_graph(image_labels)
-    return image_labels, feature_count
+    image_labeled, feature_count = ndimage.label(filtered_image)
+    util.display_graph(image_labeled)
+    return image_labeled, feature_count
 
-def identify_feature_types(image, image_labels, feature_count):
+def identify_feature_types(image, image_labeled, feature_count):
     #Project part #1: Identify feature types
     feature_types = []
     for i in xrange(feature_count):

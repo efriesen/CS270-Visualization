@@ -19,12 +19,12 @@ if __name__ == "__main__":
     image=util.imread(input_file)
     #util.display_graph(image)
     #print image
-    image_labels, feature_count = identify.identify_features(image)
+    image_labeled, feature_count = identify.identify_features(image)
     print 'feature_count:', feature_count
     #determine feature types of identified features
-    feature_types = identify.identify_feature_types(image, image_labels, feature_count)
+    feature_types = identify.identify_feature_types(image, image_labeled, feature_count)
     #object to perform analysis of features
-    image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labels, feature_types)
+    image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labeled, feature_types)
     #a set of slices that comprise the objects in the image
     object_slices = image_analyzer.get_objects()
     #Convert the input image into a PIL-friendly format
