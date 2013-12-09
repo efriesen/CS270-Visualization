@@ -40,7 +40,9 @@ def filter_image(image, filter_function, threshold=GRAYSCALE):
     return filtered_image
 
 def nongrayscale_raw(image, threshold=GRAYSCALE):
-    return filter_image(image, lambda x,y: not is_grayscale_raw(x,y), threshold)
+    #1 if the pixel is not grayscale, 0 if it is grayscale
+    filter_function = lambda x,y: not is_grayscale_raw(x,y)
+    return filter_image(image, filter_function, threshold)
 """
     #Take a numpy array imported from an image
     #Return an array with 1 where the color is not grayscale and 0 where the color is grayscale
