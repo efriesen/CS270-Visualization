@@ -82,7 +82,7 @@ def ocr_cropped(image, box):
 
 #conversion functions based on http://stackoverflow.com/questions/384759/pil-and-numpy
 def numpy_to_pil(image):
-    return Image.fromarray(image)
+    return Image.fromarray(image,mode='RGB')
 
 def pil_to_numpy(image):
     return numpy.array(image)
