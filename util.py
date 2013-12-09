@@ -87,6 +87,10 @@ def numpy_to_pil(image):
 def pil_to_numpy(image):
     return numpy.array(image)
 
+#Writes array to file as an integer. Useful for image_labeled
+def write_array('file_name',numpy_array):
+    np.savetxt('file_name',image_labeled, fmt='%i')
+
 #There are only comments from here on
 #The graveyard of previous code
 
