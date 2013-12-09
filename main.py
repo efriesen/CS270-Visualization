@@ -25,6 +25,7 @@ if __name__ == "__main__":
     feature_types = identify.identify_feature_types(image, image_labeled, feature_count)
     #object to perform analysis of features
     image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labeled, feature_types)
+    util.write_array('image_labeled.txt',image_labeled)
     #a set of slices that comprise the objects in the image
     object_slices = image_analyzer.get_objects()
     #Convert the input image into a PIL-friendly format
