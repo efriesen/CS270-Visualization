@@ -35,7 +35,7 @@ class analyzer:
             elif feature_types[i]=='axis_label':
                 axis_label_indexes.append(i)
 
-        self.data_centers = calculate_data_centers(image, image_labeled, data_point_indexes)
+        self.data_centers = util.calculate_feature_centers(image, image_labeled, data_point_indexes)
         self.interpret_axis_lines(axis_line_indexes)
         self.interpret_axis_labels(axis_label_indexes)
 
@@ -155,6 +155,3 @@ class analyzer:
     def save_bbox_index(self, index, file_name='temp.png'):
         region = self.pil_image.crop(self.bounding_boxes[index])
         region.save(file_name)
-
-def calculate_data_centers(image, image_labeled, data_point_indexes):
-    return ndimage.center_of_mass(image, image_labeled, data_point_indexes)
