@@ -4,6 +4,8 @@ import util
 import pylab
 
 GRAYSCALE=3
+HORIZONTAL_REACH=4
+VERTICAL_REACH=1
 
 def is_white(rgb):
     if rgb[0]<250:
@@ -59,17 +61,17 @@ def identify_features(image):
     #http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html
     #structure=[[1,1,1],[1,1,1],[1,1,1]]
     image_labeled, feature_count = ndimage.label(filtered_image)
-    util.display_graph(image_labeled)
+    #util.display_graph(image_labeled)
     return image_labeled, feature_count
 
 def boxes_overlap(box1, box2):
-    if box2[0]<box1[0] and box1[0]<box2[2] and box2[1]<box1[1] and box1[1]<box2[3]:
+    if box2[0]<box1[0] and box1[0]<box2[2]+HORIZONTAL_REACH and box2[1]<box1[1] and box1[1]<box2[3]+VERTICAL_REACH:
         return True
-    elif box1[0]<box2[0] and box2[0]<box1[2] and box2[0]<box1[0] and box1[1]<box2[3]:
+    elif box1[0]<box2[0] and box2[0]<box1[2]+HORIZONTAL_REACH and box2[0]<box1[0] and box1[1]<box2[3]+VERTICAL_REACH:
         return True
-    elif box1[0]<box2[0] and box2[0]<box1[2] and box1[1]<box2[1] and box2[1]<box1[3]:
+    elif box1[0]<box2[0] and box2[0]<box1[2]+HORIZONTAL_REACH and box1[1]<box2[1] and box2[1]<box1[3]+VERTICAL_REACH:
         return True
-    elif box2[0]<box1[0] and box1[0]<box2[2] and box1[1]<box2[1] and box2[1]<box1[3]:
+    elif box2[0]<box1[0] and box1[0]<box2[2]+HORIZONTAL_REACH and box1[1]<box2[1] and box2[1]<box1[3]+VERTICAL_REACH:
         return True
     return False
 
@@ -93,7 +95,6 @@ def merge_boxes(image_labeled, meta_box1, meta_box2):
     meta_box1[2] = 'axis_label'
     meta_box2[2] = 'axis_label'
 
-
 def identify_feature_types(image, image_labeled, feature_count):
     #Project part #1: Identify feature types
     #do magic here
@@ -114,7 +115,8 @@ def identify_feature_types(image, image_labeled, feature_count):
                 print 'Boxes {0} and {1} overlap!'.format(meta_box1[1], meta_box2[1])
                 merge_boxes(image_labeled, meta_box1, meta_box2)
     feature_types = [meta_box[2] for meta_box in meta_boxes]
-    print feature_types
+    #There should be 40 data_point's and 
+    print "{0} axis_labels; {1} data_points".format(feature_types.count('axis_label'),feature_types.count('data_point'))
     util.write_array('image_labeled_merged.txt',image_labeled)
     #magic done
 
