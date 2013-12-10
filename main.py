@@ -41,6 +41,5 @@ if __name__ == "__main__":
     #print util.ocr_cropped(pil_image, box)
     #print util.ocr(pil_image)
 
-    #util.display_graph(image_analyzer.get_data_centers())
     #print image_analyzer.get_objects()
     #print image_analyzer.get_data_centers()
