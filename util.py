@@ -119,6 +119,13 @@ def slice_to_box(input_slice):
 def get_corners(input_slice):
     return [(sl.start, sl.stop) for sl in input_slice]
 
+#http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
+def scale(x, input_domain, input_range):
+    domain_diff = input_domain[1]-input_domain[0]
+    range_diff = input_domain[1]-input_domain[0]
+    return (((x-input_domain[0]) *range_diff) / domain_diff) + input_range[0]
+    
+
 #There are only comments from here on
 #The graveyard of previous code
 
