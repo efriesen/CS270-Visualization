@@ -83,7 +83,6 @@ def ocr_cropped(image, box):
 
 #conversion functions based on http://stackoverflow.com/questions/384759/pil-and-numpy
 def numpy_to_pil(image):
-    print 'derp'
     #display_graph(image)
     image = np.uint8(image,mode='rgb')
     return Image.fromarray(image)
