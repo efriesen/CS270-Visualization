@@ -22,8 +22,9 @@ if __name__ == "__main__":
     image_labeled, feature_count = identify.identify_features(image)
     print 'feature_count:', feature_count
     feature_types = identify.identify_feature_types(image, image_labeled, feature_count)
-    image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labeled, feature_types)
-    box = (200,5,300,50)
+    axes_box = identify.identify_axes_box(image)
+    filtered_image = identify.nongrayscale_raw(image)
+    image_analyzer = interpret.analyzer(image, filtered_image, image_labeled, feature_types, axes_box)
     #determine feature types of identified features
     #object to perform analysis of features
     #util.write_array('image_labeled.txt',image_labeled)
