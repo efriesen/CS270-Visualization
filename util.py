@@ -74,17 +74,17 @@ def display_graph(image):
     pylab.show()
 
 def ocr(image):
-    return pytesser.image_to_string(image)
+    return pytesser.image_to_string(image.convert('RGB'))
 
 #http://www.riisen.dk/dop/pil.html
 def ocr_cropped(image, box):
     region = image.crop(box)
+    region = region.convert('RGB')
     return pytesser.image_to_string(region)
 
 #conversion functions based on http://stackoverflow.com/questions/384759/pil-and-numpy
 def numpy_to_pil(image):
     #display_graph(image)
-    image = np.uint8(image,mode='rgb')
     return Image.fromarray(image)
 
 def pil_to_numpy(image):

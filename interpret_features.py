@@ -18,7 +18,7 @@ class analyzer:
     y_domain = list()
     y_range = list()
 
-    def __init__(self, image, image_labeled, feature_types, axes_box):
+    def __init__(self, image, filtered_image, image_labeled, feature_types, axes_box):
         self.image=image
         self.pil_image = util.numpy_to_pil(image)
         self.image_labeled = image_labeled
@@ -36,9 +36,9 @@ class analyzer:
             elif feature_types[i]=='axis_label':
                 axis_label_indexes.append(i)
 
-        self.data_centers = util.calculate_feature_centers(image, image_labeled, data_point_indexes)
+        self.data_centers = util.calculate_feature_centers(filtered_image, image_labeled, data_point_indexes)
         #self.interpret_axis_lines(axis_line_indexes)
-        self.interpret_axes_box(
+        self.interpret_axes_box(axes_box)
         #This can't be run unless we have the x and y domains
         if self.x_domain and self.y_domain:
             self.interpret_axis_labels(axis_label_indexes)
@@ -46,11 +46,11 @@ class analyzer:
             if self.x_range and self.y_range:
                 scaled_data = self.calculate_scaled_data(data_point_indexes)
 
-    def interpret_axes_box(axes_box): 
-        self.x_domain[0]=box[0]
-        self.x_domain[1]=box[2]
-        self.y_domain[0]=box[1]
-        self.y_domain[0]=box[3]
+    def interpret_axes_box(self, axes_box): 
+        self.x_domain.append(axes_box[0])
+        self.x_domain.append(axes_box[2])
+        self.y_domain.append(axes_box[1])
+        self.y_domain.append(axes_box[3])
 
     def interpret_axis_lines(self, axis_line_indexes):
         for i in axis_line_indexes:
@@ -97,14 +97,21 @@ class analyzer:
             #stop if we have found two labels for both axes
             if x_len>=2 and y_len>=2:
                 break
-            if x_center_adjusted>x_domain[0]:
+            #util.write_array('temp.txt', self.image)
+            pil_image = util.numpy_to_pil(self.image)
+            pil_image.save('temp.png')
+            if x_center_adjusted>self.x_domain[0]:
                 #potential problem: out of order coord_spread. is that dangerous?
                 if x_len==0:
                     x_coords.append(x_center)
-                    x_label_ocr.append(float(util.ocr_cropped(self.image, box)))
+                    ocr = util.ocr_cropped(pil_image, box)
+                    print 'ocr', ocr
+                    x_label_ocr.append(float(ocr))
                 elif x_len==1:
                     x_coords.append(x_center)
-                    x_label_ocr.append(float(util.ocr_cropped(self.image, box)))
+                    ocr = util.ocr_cropped(pil_image, box)
+                    print 'ocr', ocr
+                    x_label_ocr.append(float(ocr))
                 else:
                     #the x labels have already been found
                     pass
@@ -112,10 +119,14 @@ class analyzer:
             else:
                 if y_len==0:
                     y_coords.append(y_center)
-                    y_label_ocr.append(float(util.ocr_cropped(self.image, box)))
+                    ocr = util.ocr_cropped(pil_image, box)
+                    print 'ocr', ocr
+                    y_label_ocr.append(float(ocr))
                 elif y_len==1:
                     y_coords.append(y_center)
-                    y_label_ocr.append(float(util.ocr_cropped(self.image, box)))
+                    ocr = util.ocr_cropped(pil_image, box)
+                    print 'ocr', ocr
+                    y_label_ocr.append(float(ocr))
                 else:
                     #the y labels have already been found
                     pass
