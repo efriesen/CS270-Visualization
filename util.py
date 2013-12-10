@@ -97,13 +97,15 @@ def write_array(file_name,numpy_array):
 #return a series of slices corresponding to each separate object
 # as defined by image_labeled
 def generate_object_slices(image_labeled):
-    return ndimage.find_objects(image_labeled)
+    object_slices = ndimage.find_objects(image_labeled)
+    return [x for x in object_slices if x is not None]
 
 #return the bounding boxes corresponding to each slice
 def generate_bounding_boxes(object_slices):
+    length = len(object_slices)
     bounding_boxes = list()
-    for i in xrange(len(object_slices)):
-        bounding_boxes.append(slice_to_box(object_slices[i]))
+    for object_slice in object_slices:
+        bounding_boxes.append(slice_to_box(object_slice))
     return bounding_boxes
 
 def slice_to_box(input_slice):
