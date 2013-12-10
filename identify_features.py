@@ -54,26 +54,22 @@ def identify_features(image):
     #So a new algorithm goes here
 
     filtered_image=nongrayscale_raw(image)
-    #util.display_graph(filtered_image)
     #filtered_image = non_white(image)
     #util.display_graph(filtered_image)
     #http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html
-    structure=[[1,1,1],[1,1,1],[1,1,1]]
-    image_labeled, feature_count = ndimage.label(filtered_image, structure)
-    #util.display_graph(image_labeled)
-    #util.write_array('image_labeled.txt',image_labeled)
+    #structure=[[1,1,1],[1,1,1],[1,1,1]]
     image_labeled, feature_count = ndimage.label(filtered_image)
-    #util.display_graph(image_labeled)
+    util.display_graph(image_labeled)
     return image_labeled, feature_count
 
 def boxes_overlap(box1, box2):
-    if box1[0]<box2[2] and box1[1]>box2[3]:
+    if box2[0]<box1[0] and box1[0]<box2[2] and box2[1]<box1[1] and box1[1]<box2[3]:
         return True
-    elif box1[2]>box2[0] and box1[1]>box2[1]:
+    elif box1[0]<box2[0] and box2[0]<box1[2] and box2[0]<box1[0] and box1[1]<box2[3]:
         return True
-    elif box1[2]>box2[0] and box1[3]<box2[1]:
+    elif box1[0]<box2[0] and box2[0]<box1[2] and box1[1]<box2[1] and box2[1]<box1[3]:
         return True
-    elif box1[0]<box2[2] and box1[3]<box2[1]:
+    elif box2[0]<box1[0] and box1[0]<box2[2] and box1[1]<box2[1] and box2[1]<box1[3]:
         return True
     return False
 
@@ -101,13 +97,15 @@ def merge_boxes(image_labeled, meta_box1, meta_box2):
 def identify_feature_types(image, image_labeled, feature_count):
     #Project part #1: Identify feature types
     #do magic here
+    util.write_array('image_labeled_premerge.txt',image_labeled)
     object_slices=util.generate_object_slices(image_labeled)
+    #print object_slices
     bounding_boxes=util.generate_bounding_boxes(object_slices)
     #meta_box:=(box_boundaries, cluster_id, cluster_type)
     #e.g. ((0,0,3,3), 2, 'data_point')
     #note that cluster_id's start at 1, not 0
     meta_boxes=[[box,id+1,'data_point'] for id,box in enumerate(bounding_boxes)]
-    print meta_boxes
+    #print meta_boxes
     for i in xrange(len(meta_boxes)-1):
         meta_box1=meta_boxes[i]
         for j in xrange(i+1,len(meta_boxes)):
@@ -117,7 +115,7 @@ def identify_feature_types(image, image_labeled, feature_count):
                 merge_boxes(image_labeled, meta_box1, meta_box2)
     feature_types = [meta_box[2] for meta_box in meta_boxes]
     print feature_types
-    util.write_array('image_labeled.txt',image_labeled)
+    util.write_array('image_labeled_merged.txt',image_labeled)
     #magic done
     return feature_types
 
