@@ -1,5 +1,6 @@
 import numpy as np
 import pylab
+from scipy import ndimage
 import pymorph
 from colour import Color
 #imports look weird because my system is weird
@@ -82,7 +83,9 @@ def ocr_cropped(image, box):
 
 #conversion functions based on http://stackoverflow.com/questions/384759/pil-and-numpy
 def numpy_to_pil(image):
-    return Image.fromarray(image,mode='RGB')
+    #display_graph(image)
+    image = np.uint8(image,mode='rgb')
+    return Image.fromarray(image)
 
 def pil_to_numpy(image):
     return numpy.array(image)
@@ -90,6 +93,31 @@ def pil_to_numpy(image):
 #Writes array to file as an integer. Useful for image_labeled
 def write_array(file_name,numpy_array):
     np.savetxt(file_name,numpy_array, fmt='%i')
+
+#return a series of slices corresponding to each separate object
+# as defined by image_labeled
+def generate_object_slices(image_labeled):
+    return ndimage.find_objects(image_labeled)
+
+#return the bounding boxes corresponding to each slice
+def generate_bounding_boxes(object_slices):
+    bounding_boxes = list()
+    for i in xrange(len(object_slices)):
+        bounding_boxes.append(slice_to_box(object_slices[i]))
+    return bounding_boxes
+
+def slice_to_box(input_slice):
+    corners = get_corners(input_slice)
+    left = int(corners[0][0])
+    right = int(corners[0][1])
+    top = int(corners[1][0])
+    bottom = int(corners[1][1])
+    box = (left, top, right, bottom)
+    return box
+
+#http://stackoverflow.com/questions/17750974/how-to-get-coordinates-from-a-numpy-slice-object
+def get_corners(input_slice):
+    return [(sl.start, sl.stop) for sl in input_slice]
 
 #There are only comments from here on
 #The graveyard of previous code

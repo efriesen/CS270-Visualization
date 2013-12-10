@@ -56,6 +56,9 @@ def identify_features(image):
     filtered_image=nongrayscale_raw(image)
     #filtered_image = non_white(image)
     util.display_graph(filtered_image)
+    #filtered_image=nongrayscale_raw(image)
+    filtered_image = non_white(image)
+    #util.display_graph(filtered_image)
     #http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html
     #structure=[[0,1,0],[1,1,1],[0,1,0]]
     image_labeled, feature_count = ndimage.label(filtered_image, structure)
