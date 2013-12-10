@@ -18,7 +18,7 @@ class analyzer:
     y_domain = list()
     y_range = list()
 
-    def __init__(self, image, image_labeled, feature_types):
+    def __init__(self, image, image_labeled, feature_types, axes_box):
         self.image=image
         self.pil_image = util.numpy_to_pil(image)
         self.image_labeled = image_labeled
@@ -37,13 +37,20 @@ class analyzer:
                 axis_label_indexes.append(i)
 
         self.data_centers = util.calculate_feature_centers(image, image_labeled, data_point_indexes)
-        self.interpret_axis_lines(axis_line_indexes)
+        #self.interpret_axis_lines(axis_line_indexes)
+        self.interpret_axes_box(
         #This can't be run unless we have the x and y domains
         if self.x_domain and self.y_domain:
             self.interpret_axis_labels(axis_label_indexes)
         #We should now have the domains and ranges, so x_scale and y_scale work
             if self.x_range and self.y_range:
                 scaled_data = self.calculate_scaled_data(data_point_indexes)
+
+    def interpret_axes_box(axes_box): 
+        self.x_domain[0]=box[0]
+        self.x_domain[1]=box[2]
+        self.y_domain[0]=box[1]
+        self.y_domain[0]=box[3]
 
     def interpret_axis_lines(self, axis_line_indexes):
         for i in axis_line_indexes:
