@@ -58,15 +58,70 @@ def identify_features(image):
     #filtered_image = non_white(image)
     #util.display_graph(filtered_image)
     #http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html
+    structure=[[1,1,1],[1,1,1],[1,1,1]]
+    image_labeled, feature_count = ndimage.label(filtered_image, structure)
+    #util.display_graph(image_labeled)
+    #util.write_array('image_labeled.txt',image_labeled)
     image_labeled, feature_count = ndimage.label(filtered_image)
     #util.display_graph(image_labeled)
     return image_labeled, feature_count
 
+def boxes_overlap(box1, box2):
+    if box1[0]<box2[2] and box1[1]>box2[3]:
+        return True
+    elif box1[2]>box2[0] and box1[1]>box2[1]:
+        return True
+    elif box1[2]>box2[0] and box1[3]<box2[1]:
+        return True
+    elif box1[0]<box2[2] and box1[3]<box2[1]:
+        return True
+    return False
+
+def merge_boxes(image_labeled, meta_box1, meta_box2):
+    id1, id2 = meta_box1[1], meta_box2[1]
+    unified_id = min(id1, id2)
+    if unified_id == id1:
+        #update meta_box2's pixels' labels
+        box2 = meta_box2[0]
+        for row in xrange(box2[0], box2[2]):
+            for col in xrange(box2[1], box2[3]):
+                if image_labeled[row][col] != 0:
+                    image_labeled[row][col] = unified_id
+    else:
+        #update meta_box1's pixels' labels
+        box1 = meta_box1[0]
+        for row in xrange(box1[0], box1[2]):
+            for col in xrange(box1[1], box1[3]):
+                if image_labeled[row][col] != 0:
+                    image_labeled[row][col] = unified_id
+    meta_box1[2] = 'axis_label'
+    meta_box2[2] = 'axis_label'
+
+
 def identify_feature_types(image, image_labeled, feature_count):
     #Project part #1: Identify feature types
-    feature_types = []
-    for i in xrange(feature_count):
-        #do magic here
-
-        feature_types.append('data_point')
+    #do magic here
+    object_slices=util.generate_object_slices(image_labeled)
+    bounding_boxes=util.generate_bounding_boxes(object_slices)
+    #meta_box:=(box_boundaries, cluster_id, cluster_type)
+    #e.g. ((0,0,3,3), 2, 'data_point')
+    #note that cluster_id's start at 1, not 0
+    meta_boxes=[[box,id+1,'data_point'] for id,box in enumerate(bounding_boxes)]
+    print meta_boxes
+    for i in xrange(len(meta_boxes)-1):
+        meta_box1=meta_boxes[i]
+        for j in xrange(i+1,len(meta_boxes)):
+            meta_box2=meta_boxes[j]
+            if boxes_overlap(meta_box1[0], meta_box2[0]):
+                print 'Boxes {0} and {1} overlap!'.format(meta_box1[1], meta_box2[1])
+                merge_boxes(image_labeled, meta_box1, meta_box2)
+    feature_types = [meta_box[2] for meta_box in meta_boxes]
+    print feature_types
+    util.write_array('image_labeled.txt',image_labeled)
+    #magic done
     return feature_types
+
+
+
+
+

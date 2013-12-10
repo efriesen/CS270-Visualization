@@ -25,7 +25,6 @@ if __name__ == "__main__":
     image_analyzer = interpret.analyzer(identify.nongrayscale_raw(image), image_labeled, feature_types)
     box = (200,5,300,50)
     #determine feature types of identified features
-    feature_types = identify.identify_feature_types(image, image_labeled, feature_count)
     #object to perform analysis of features
     #util.write_array('image_labeled.txt',image_labeled)
     #a set of slices that comprise the objects in the image
