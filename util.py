@@ -119,68 +119,11 @@ def slice_to_box(input_slice):
 def get_corners(input_slice):
     return [(sl.start, sl.stop) for sl in input_slice]
 
-#There are only comments from here on
-#The graveyard of previous code
-
-#print nongrayscale_image
-#print labeled
-#print centers
-#regmax = pymorph.regmax(labeled)
-#print 'feature_count:', feature_count
-
-#x = np.array(centers)[:,0]
-#y = np.array(centers)[:,1]
-#print x
-#print y
-
-#output_array(nongrayscale_image,'nongrayscale.txt')
-
-#output_image(image, 'temp.txt')
-#color_image = make_color_array(image)
-
-#print color_image[0][0]
-#print is_grayscale_color(color_image[0][0], 0.01)
-
-"""
-temp = nongrayscale(color_image)
-print color_image[0][0]
-print 'temp', temp[0][0]
-output_array(temp, 'nongrayscale.txt')
-"""
-#output_image(image, 'temp.txt')
-#output_array(make_color_array(image),'temp_color.txt')
-"""
-print image[0]
-print image[0][0]
-rint color_scale(image[0][0])
-print Color(rgb=color_ratio(image[0][0]))
-"""
-"""
-#http://ms.physics.ucdavis.edu/~bradshaw/Python%20Image%20Reduction.pdf
-threshold = image.mean()
-#print threshold
-#explains label function: http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html
-labels, num = ndimage.label(image > threshold)
-#print labels
-centers = ndimage.center_of_mass(image, labels, range(1,num+1))
-pylab.imshow(centers)
-pylab.show()
-#print centers
-x = np.array(centers)[:,0]
-y = np.array(centers)[:,1]
-
-print x
-print y
-"""
-
-
-#print len(image[0])
-"""
-print 'shape:', image.shape
-print 'data type:', image.dtype
-print 'max:', image.max()
-print 'min:', image.min()
-
-
-pylab.imshow(image)
-pylab.show()"""
+#http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
+def scale(x, input_domain, input_range):
+    domain_diff = input_domain[1]-input_domain[0]
+    range_diff = input_domain[1]-input_domain[0]
+    return (((x-input_domain[0]) *range_diff) / domain_diff) + input_range[0]
+    
+def calculate_feature_centers(image, image_labeled, data_point_indexes):
+    return ndimage.center_of_mass(image, image_labeled, data_point_indexes)

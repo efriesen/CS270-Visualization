@@ -31,8 +31,9 @@ if __name__ == "__main__":
     object_slices = image_analyzer.object_slices
     #Convert the input image into a PIL-friendly format
 
+
     #image_analyzer.save_bbox_index(20)
-    image_analyzer.pil_image.save('temp.png')
+    #image_analyzer.pil_image.save('temp.png')
 
     #cropped_region = pil_image.crop(box)
     #cropped_region.save('temp.png')

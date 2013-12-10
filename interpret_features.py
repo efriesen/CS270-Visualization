@@ -11,16 +11,11 @@ class analyzer:
     object_slices=None
     bounding_boxes=None
     feature_types=None
-    """
-    the scales will be defined as functions during the program
-    they take a given coordinate and return the coordinate's relative value
-    according to the axis on the graph
-    For example, if the axis on the graph ranges from 0 to 100
-    """
-    x_domain = None
-    x_range = None
-    y_domain = None
-    y_range = None
+
+    x_domain = list()
+    x_range = list()
+    y_domain = list()
+    y_range = list()
 
     def __init__(self, image, image_labeled, feature_types):
         self.image=image
@@ -39,50 +34,124 @@ class analyzer:
                 axis_line_indexes.append(i)
             elif feature_types[i]=='axis_label':
                 axis_label_indexes.append(i)
-        
-        self.data_centers = calculate_data_centers(image, image_labeled, data_point_indexes)
+
+        self.data_centers = util.calculate_feature_centers(image, image_labeled, data_point_indexes)
+        self.interpret_axis_lines(axis_line_indexes)
+        self.interpret_axis_labels(axis_label_indexes)
+
+    def interpret_axis_lines(self, axis_line_indexes):
         for i in axis_line_indexes:
-            interpret_axis_line(self.image, self.image_labeled, i)
+            #First, determine whether the axis is horizontal or vertical
+            box = self.bounding_boxes[index]
+            width = box[2]-box[0]
+            height = box[3]-box[1]
+            if width>height:
+                #the axis is horizontal
+                self.x_domain[0]=box[0]
+                self.x_domain[1]=box[2]
+            else:
+                #the axis is vertical
+                #note that top is 0 and the bottom is the max
+                self.y_domain[0]=box[1]
+                self.y_domain[0]=box[3]
+
+    """
+    Find two x labels and two y labels
+    Determine their coordinates (ideally by tick marks; for now, by center)
+    OCR them to get the values those coordinates represent
+    Stretch the distance between the two labels found to match the axis length
+    This will determine x_range and y_range
+    """
+    def interpret_axis_labels(self, axis_label_indexes):
+        x_coords=list()
+        x_label_ocr=list()
+        y_coords=list()
+        y_label_ocr=list()
         for i in axis_label_indexes:
-            interpret_axis_label(self.image, self.image_labeled, i)
+            box = self.bounding_boxes[i]
+            x_center = box[2]-box[0]
+            y_center = box[3]-box[1]
+            """
+            If the label lies to the right of the y=x line that passes through
+            the bottom left corner of the graph, it is for the x axis.
+            Otherwise it is for the y axis.
+            We calculate this by decreasing the x center for every y that it is
+            below the bottom of the graph.
+            """
+            x_center_adjusted = x_center-(y_center-self.y_domain[1])
+            x_len = len(x_label_ocr)
+            y_len = len(y_label_ocr)
+            #stop if we have found two labels for both axes
+            if x_len>=2 and y_len>=2:
+                break
+            if x_center_adjusted>x_domain[0]:
+                #potential problem: out of order coord_spread. is that dangerous?
+                if x_len==0:
+                    x_coords.append(x_center)
+                    x_label_ocr.append(float(util.ocr_cropped(self.image, box)))
+                elif x_len==1:
+                    x_coords.append(x_center)
+                    x_label_ocr.append(float(util.ocr_cropped(self.image, box)))
+                else:
+                    #the x labels have already been found
+                    pass
 
-    def interpret_axis_line(self, index):
-        #First, determine whether the axis is horizontal or vertical
-        box = self.bounding_boxes[index]
-        width = box[2]-box[0]
-        height = box[3]-box[1]
-        if width>height:
-            #the axis is horizontal
-            self.x_domain[0]=box[0]
-            self.x_domain[1]=box[2]
+            else:
+                if y_len==0:
+                    y_coords.append(y_center)
+                    y_label_ocr.append(float(util.ocr_cropped(self.image, box)))
+                elif y_len==1:
+                    y_coords.append(y_center)
+                    y_label_ocr.append(float(util.ocr_cropped(self.image, box)))
+                else:
+                    #the y labels have already been found
+                    pass
+
+        #Make sure we have the x and y labels and label spreads
+        if len(x_coords)>=2 and len(y_coords>=2):
+            self.x_range.append(util.scale(x_label_ocr[0], 
+                x_coords, self.x_domain))
+            self.x_range.append(util.scale(x_label_ocr[1], 
+                x_coords, self.x_domain))
+            self.y_range.append(util.scale(y_label_ocr[0], 
+                y_coords, self.y_domain))
+            self.y_range.append(util.scale(y_label_ocr[1], 
+                y_coords, self.y_domain))
+
+    #Given a label and the knowledge that it is an x or y label,
+    #OCR it and assign the value to x_range or y_range as appropriate
+    #The first value 
+    def assign_label_ocr(self, box, xy):
+        label_ocr = float(util.ocr_cropped(self.image, box))
+        print 'label_ocr', label_ocr
+        if xy=='y':
+            if not y_range:
+                y_range[0]=label_ocr
+            else:
+                y_range[1]=label_ocr
+        elif xy=='x':
+            if not x_range:
+                x_range[0]=label_ocr
+            else:
+                x_range[1]=label_ocr
         else:
-            #the axis is vertical
-            #invert the order because the top is 0 and the bottom is the max
-            self.y_domain[0]=box[3]
-            self.y_domain[0]=box[1]
+            print 'ERROR: invalid xy', xy
 
-    def interpret_axis_label(self, index):
-        pass
+        #Assume that labels for the x axis are to the right of the y=x line
+        #that passes through the bottom left corner of the graph
+
+        if left<x_domain[0]:
+            pass
 
     #Assume x lies within the domain
-    #http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
     def x_scale(self, x):
-        x_domain_diff = self.x_domain[1]-self.x_domain[0]
-        x_range_diff = self.x_range[1]-self.x_range[0]
-        x = (((x-self.x_domain[0]) *x_range_diff) /x_domain_diff) + self.x_range[0]
-        return x
+        return util.scale(x, self.x_domain, self.x_range)
 
     #Assume y lies within the domain
     def y_scale(self, y):
-        y_domain_diff = self.y_domain[1]-self.y_domain[0]
-        y_range_diff = self.y_range[1]-self.y_range[0]
-        y = (((y-self.y_domain[0]) *y_range_diff) /y_domain_diff) + self.y_range[0]
-        return y
+        return util.scale(y, self.y_domain, self.y_range)
 
     #Save a cropped section of the bounding box associated with a given index to file
     def save_bbox_index(self, index, file_name='temp.png'):
         region = self.pil_image.crop(self.bounding_boxes[index])
         region.save(file_name)
-        
-def calculate_data_centers(image, image_labeled, data_point_indexes):
-    return ndimage.center_of_mass(image, image_labeled, data_point_indexes)

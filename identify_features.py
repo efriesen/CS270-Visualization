@@ -62,6 +62,8 @@ def identify_features(image):
     image_labeled, feature_count = ndimage.label(filtered_image, structure)
     #util.display_graph(image_labeled)
     #util.write_array('image_labeled.txt',image_labeled)
+    image_labeled, feature_count = ndimage.label(filtered_image)
+    #util.display_graph(image_labeled)
     return image_labeled, feature_count
 
 def boxes_overlap(box1, box2):
