@@ -83,15 +83,15 @@ def merge_boxes(image_labeled, meta_box1, meta_box2):
     if unified_id == id1:
         #update meta_box2's pixels' labels
         box2 = meta_box2[0]
-        for row in xrange(box2[0], box2[2]):
-            for col in xrange(box2[1], box2[3]):
+        for row in xrange(box2[1], box2[3]):
+            for col in xrange(box2[0], box2[2]):
                 if image_labeled[row][col] != 0:
                     image_labeled[row][col] = unified_id
     else:
         #update meta_box1's pixels' labels
         box1 = meta_box1[0]
-        for row in xrange(box1[0], box1[2]):
-            for col in xrange(box1[1], box1[3]):
+        for row in xrange(box1[1], box1[3]):
+            for col in xrange(box1[0], box1[2]):
                 if image_labeled[row][col] != 0:
                     image_labeled[row][col] = unified_id
     meta_box1[2] = 'axis_label'
