@@ -11,6 +11,16 @@ class analyzer:
     object_slices=None
     bounding_boxes=None
     feature_types=None
+    """
+    the scales will be defined as functions during the program
+    they take a given coordinate and return the coordinate's relative value
+    according to the axis on the graph
+    For example, if the axis on the graph ranges from 0 to 100
+    """
+    x_domain = [0,1]
+    x_range = [1,10]
+    y_domain = [1,10]
+    y_range = [0,1]
 
     def __init__(self, image, image_labeled, feature_types):
         self.image=image
@@ -35,6 +45,36 @@ class analyzer:
         for i in axis_label_indexes:
             interpret_axis_label(self.image, self.image_labeled, i)
 
+    #Assume x lies within the domain
+    #http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
+    def x_scale(self, x):
+        x_domain_diff = self.x_domain[1]-self.x_domain[0]
+        x_range_diff = self.x_range[1]-self.x_range[0]
+        x = (((x-self.x_domain[0]) *x_range_diff) /x_domain_diff) + self.x_range[0]
+        return x
+
+    #Assume y lies within the domain
+    def y_scale(self, y):
+        y_domain_diff = self.y_domain[1]-self.y_domain[0]
+        y_range_diff = self.y_range[1]-self.y_range[0]
+        y = (((y-self.y_domain[0]) *y_range_diff) /y_domain_diff) + self.y_range[0]
+        return y
+
+    def interpret_axis_label(self, index):
+        pass
+
+    def interpret_axis_line(self, index):
+        #First, determine whether the axis is horizontal or vertical
+        box = self.bounding_boxes[index]
+        width = box[2]-box[0]
+        height = box[3]-box[1]
+        if width>height:
+            #the axis is horizontal
+            pass
+        else:
+            #the axis is vertical
+            pass
+
     #Save a cropped section of the bounding box associated with a given index to file
     def save_bbox_index(self, index, file_name='temp.png'):
         region = self.pil_image.crop(self.bounding_boxes[index])
@@ -42,9 +82,3 @@ class analyzer:
         
 def calculate_data_centers(image, image_labeled, data_point_indexes):
     return ndimage.center_of_mass(image, image_labeled, data_point_indexes)
-
-def interpret_axis_label(image, image_labeled, feature_index):
-    pass
-
-def interpret_axis_line(image, image_labeled, feature_index):
-    pass
