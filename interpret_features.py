@@ -35,18 +35,16 @@ class analyzer:
         for i in xrange(0, len(feature_types)):
             if feature_types[i]=='data_point':
                 data_point_indexes.append(i+1)
-            elif feature_types[i]=='axis_label':
-                axis_label_indexes.append(i)
             elif feature_types[i]=='axis_line':
                 axis_line_indexes.append(i)
+            elif feature_types[i]=='axis_label':
+                axis_label_indexes.append(i)
+        
         self.data_centers = calculate_data_centers(image, image_labeled, data_point_indexes)
         for i in axis_line_indexes:
             interpret_axis_line(self.image, self.image_labeled, i)
         for i in axis_label_indexes:
             interpret_axis_label(self.image, self.image_labeled, i)
-
-    def interpret_axis_label(self, index):
-        pass
 
     def interpret_axis_line(self, index):
         #First, determine whether the axis is horizontal or vertical
@@ -62,6 +60,9 @@ class analyzer:
             #invert the order because the top is 0 and the bottom is the max
             self.y_domain[0]=box[3]
             self.y_domain[0]=box[1]
+
+    def interpret_axis_label(self, index):
+        pass
 
     #Assume x lies within the domain
     #http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
