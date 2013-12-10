@@ -38,9 +38,12 @@ class analyzer:
 
         self.data_centers = util.calculate_feature_centers(image, image_labeled, data_point_indexes)
         self.interpret_axis_lines(axis_line_indexes)
-        self.interpret_axis_labels(axis_label_indexes)
-        #We now have the domains and ranges, so x_scale and y_scale work 
-        
+        #This can't be run unless we have the x and y domains
+        if self.x_domain and self.y_domain:
+            self.interpret_axis_labels(axis_label_indexes)
+        #We should now have the domains and ranges, so x_scale and y_scale work
+            if self.x_range and self.y_range:
+                scaled_data = self.calculate_scaled_data(data_point_indexes)
 
     def interpret_axis_lines(self, axis_line_indexes):
         for i in axis_line_indexes:
@@ -128,6 +131,10 @@ class analyzer:
     #Assume y lies within the domain
     def y_scale(self, y):
         return util.scale(y, self.y_domain, self.y_range)
+    
+    def calculate_scaled_data(self, data_point_indexes):
+        for center in self.data_centers:
+            print 'center', center
 
     #Save a cropped section of the bounding box associated with a given index to file
     def save_bbox_index(self, index, file_name='temp.png'):
