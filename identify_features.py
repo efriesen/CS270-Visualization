@@ -39,13 +39,13 @@ def filter_image(image, filter_function):
                 filtered_image[i][j]=1
     return filtered_image
 
+def non_white(image):
+    filter_function = lambda x: not is_white(x)
+    return filter_image(image, filter_function)
+
 def nongrayscale_raw(image, threshold=GRAYSCALE):
     #1 if the pixel is not grayscale, 0 if it is grayscale
     filter_function = lambda x: not is_grayscale_raw(x,threshold)
-    return filter_image(image, filter_function)
-
-def non_white(image):
-    filter_function = lambda x: not is_white(x)
     return filter_image(image, filter_function)
 
 def identify_features(image):
@@ -54,16 +54,12 @@ def identify_features(image):
     #So a new algorithm goes here
 
     filtered_image=nongrayscale_raw(image)
-    #filtered_image = non_white(image)
     util.display_graph(filtered_image)
-    #filtered_image=nongrayscale_raw(image)
-    filtered_image = non_white(image)
+    #filtered_image = non_white(image)
     #util.display_graph(filtered_image)
     #http://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.measurements.label.html
-    #structure=[[0,1,0],[1,1,1],[0,1,0]]
-    image_labeled, feature_count = ndimage.label(filtered_image, structure)
+    image_labeled, feature_count = ndimage.label(filtered_image)
     util.display_graph(image_labeled)
-    #util.display_graph(image_labeled)
     return image_labeled, feature_count
 
 def identify_feature_types(image, image_labeled, feature_count):
@@ -71,5 +67,6 @@ def identify_feature_types(image, image_labeled, feature_count):
     feature_types = []
     for i in xrange(feature_count):
         #do magic here
+
         feature_types.append('data_point')
     return feature_types
