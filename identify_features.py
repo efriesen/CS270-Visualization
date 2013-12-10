@@ -120,17 +120,16 @@ def identify_feature_types(image, image_labeled, feature_count):
     util.write_array('image_labeled_merged.txt',image_labeled)
     #magic done
 
-    axes = identify_axes(image)
     return feature_types
 
-def identify_axes(image):
+def identify_axes_box(image):
     filtered_image = non_white(image)
     image_labeled, feature_count = ndimage.label(filtered_image)
     util.write_array('temp.txt',image_labeled)
     object_slices=util.generate_object_slices(image_labeled)
     bounding_boxes=util.generate_bounding_boxes(object_slices)
     graph_bounds = identify_largest_bounding_box(bounding_boxes)
-    print graph_bounds
+    return graph_bounds
 
 def identify_largest_bounding_box(bounding_boxes):
     max_area= 0
