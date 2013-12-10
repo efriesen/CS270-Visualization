@@ -108,11 +108,12 @@ def generate_bounding_boxes(object_slices):
 
 def slice_to_box(input_slice):
     corners = get_corners(input_slice)
-    left = int(corners[0][0])
-    right = int(corners[0][1])
-    top = int(corners[1][0])
-    bottom = int(corners[1][1])
+    top = int(corners[0][0])
+    bottom = int(corners[0][1])
+    left = int(corners[1][0])
+    right = int(corners[1][1])
     box = (left, top, right, bottom)
+    print input_slice, corners, box
     return box
 
 #http://stackoverflow.com/questions/17750974/how-to-get-coordinates-from-a-numpy-slice-object
