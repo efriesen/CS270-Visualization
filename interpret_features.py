@@ -17,10 +17,10 @@ class analyzer:
     according to the axis on the graph
     For example, if the axis on the graph ranges from 0 to 100
     """
-    x_domain = [0,1]
-    x_range = [1,10]
-    y_domain = [1,10]
-    y_range = [0,1]
+    x_domain = None
+    x_range = None
+    y_domain = None
+    y_range = None
 
     def __init__(self, image, image_labeled, feature_types):
         self.image=image
@@ -70,10 +70,13 @@ class analyzer:
         height = box[3]-box[1]
         if width>height:
             #the axis is horizontal
-            pass
+            self.x_domain[0]=box[0]
+            self.x_domain[1]=box[2]
         else:
             #the axis is vertical
-            pass
+            #invert the order because the top is 0 and the bottom is the max
+            self.y_domain[0]=box[3]
+            self.y_domain[0]=box[1]
 
     #Save a cropped section of the bounding box associated with a given index to file
     def save_bbox_index(self, index, file_name='temp.png'):
