@@ -11,6 +11,7 @@ class analyzer:
     object_slices=None
     bounding_boxes=None
     feature_types=None
+    scaled_data=None
 
     x_domain = list()
     x_range = list()
@@ -38,6 +39,8 @@ class analyzer:
         self.data_centers = util.calculate_feature_centers(image, image_labeled, data_point_indexes)
         self.interpret_axis_lines(axis_line_indexes)
         self.interpret_axis_labels(axis_label_indexes)
+        #We now have the domains and ranges, so x_scale and y_scale work 
+        
 
     def interpret_axis_lines(self, axis_line_indexes):
         for i in axis_line_indexes:
@@ -117,31 +120,6 @@ class analyzer:
                 y_coords, self.y_domain))
             self.y_range.append(util.scale(y_label_ocr[1], 
                 y_coords, self.y_domain))
-
-    #Given a label and the knowledge that it is an x or y label,
-    #OCR it and assign the value to x_range or y_range as appropriate
-    #The first value 
-    def assign_label_ocr(self, box, xy):
-        label_ocr = float(util.ocr_cropped(self.image, box))
-        print 'label_ocr', label_ocr
-        if xy=='y':
-            if not y_range:
-                y_range[0]=label_ocr
-            else:
-                y_range[1]=label_ocr
-        elif xy=='x':
-            if not x_range:
-                x_range[0]=label_ocr
-            else:
-                x_range[1]=label_ocr
-        else:
-            print 'ERROR: invalid xy', xy
-
-        #Assume that labels for the x axis are to the right of the y=x line
-        #that passes through the bottom left corner of the graph
-
-        if left<x_domain[0]:
-            pass
 
     #Assume x lies within the domain
     def x_scale(self, x):
