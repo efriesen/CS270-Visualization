@@ -35,7 +35,6 @@ class analyzer:
         for i in axis_label_indexes:
             interpret_axis_label(self.image, self.image_labeled, i)
 
-
     #Save a cropped section of the bounding box associated with a given index to file
     def save_bbox_index(self, index, file_name='temp.png'):
         region = self.pil_image.crop(self.bounding_boxes[index])
