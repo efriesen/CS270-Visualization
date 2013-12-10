@@ -45,21 +45,6 @@ class analyzer:
         for i in axis_label_indexes:
             interpret_axis_label(self.image, self.image_labeled, i)
 
-    #Assume x lies within the domain
-    #http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
-    def x_scale(self, x):
-        x_domain_diff = self.x_domain[1]-self.x_domain[0]
-        x_range_diff = self.x_range[1]-self.x_range[0]
-        x = (((x-self.x_domain[0]) *x_range_diff) /x_domain_diff) + self.x_range[0]
-        return x
-
-    #Assume y lies within the domain
-    def y_scale(self, y):
-        y_domain_diff = self.y_domain[1]-self.y_domain[0]
-        y_range_diff = self.y_range[1]-self.y_range[0]
-        y = (((y-self.y_domain[0]) *y_range_diff) /y_domain_diff) + self.y_range[0]
-        return y
-
     def interpret_axis_label(self, index):
         pass
 
@@ -77,6 +62,21 @@ class analyzer:
             #invert the order because the top is 0 and the bottom is the max
             self.y_domain[0]=box[3]
             self.y_domain[0]=box[1]
+
+    #Assume x lies within the domain
+    #http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
+    def x_scale(self, x):
+        x_domain_diff = self.x_domain[1]-self.x_domain[0]
+        x_range_diff = self.x_range[1]-self.x_range[0]
+        x = (((x-self.x_domain[0]) *x_range_diff) /x_domain_diff) + self.x_range[0]
+        return x
+
+    #Assume y lies within the domain
+    def y_scale(self, y):
+        y_domain_diff = self.y_domain[1]-self.y_domain[0]
+        y_range_diff = self.y_range[1]-self.y_range[0]
+        y = (((y-self.y_domain[0]) *y_range_diff) /y_domain_diff) + self.y_range[0]
+        return y
 
     #Save a cropped section of the bounding box associated with a given index to file
     def save_bbox_index(self, index, file_name='temp.png'):
