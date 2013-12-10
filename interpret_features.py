@@ -30,6 +30,10 @@ class analyzer:
             elif feature_types[i]=='axis_line':
                 axis_line_indexes.append(i)
         self.data_centers = calculate_data_centers(image, image_labeled, data_point_indexes)
+        for i in axis_line_indexes:
+            interpret_axis_line(self.image, self.image_labeled, i)
+        for i in axis_label_indexes:
+            interpret_axis_label(self.image, self.image_labeled, i)
 
 
     #Save a cropped section of the bounding box associated with a given index to file
@@ -39,9 +43,6 @@ class analyzer:
         
 def calculate_data_centers(image, image_labeled, data_point_indexes):
     return ndimage.center_of_mass(image, image_labeled, data_point_indexes)
-
-def interpret_axis(image, image_labeled, feature_index):
-    pass
 
 def interpret_axis_label(image, image_labeled, feature_index):
     pass
